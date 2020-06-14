@@ -1,27 +1,30 @@
-import { Controller, Post, HttpStatus, Body, Res, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './user.model';
 
 @Controller('users')
 export class UsersController {
-    constructor(private userService:UsersService){}
+  constructor(private userService: UsersService) {}
 
-    // @Get()
-    // async getAllUsers() {
-    //     const allUsers = await this.userService.findOne("dejan@gmail.com");
-    //     return {
-    //         message:"Dejan",
-    //         user: allUsers
-    //     };
-    // }
+  @Post('signup')
+  async signUp(
+    @Body('email') email: string,
+    @Body('password') password: string,
+  ) {
+    const signUpResponse = await this.userService.signUp(email, password);
+    return {
+      id: signUpResponse.id,
+      message: signUpResponse.message,
+    };
+  }
 
-    @Post('/create')
-    async addUser(@Res() res, @Body() user: User) {
-        const newUser = await this.userService.addUser(user);
-        return res.status(HttpStatus.OK).json({
-            message: "Customer has been created successfully",
-            newUser
-        })
-    }
+  @Get()
+  async getAllRecipes() {
+    const recipes = await this.userService.fetchUsers();
+    return recipes;
+  }
 
+  @Get(':email')
+  getRecipe(@Param('email') email) {
+    return this.userService.getUser(email);
+  }
 }
