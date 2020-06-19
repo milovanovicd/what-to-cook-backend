@@ -13,7 +13,7 @@ export class IngredientsService {
 
     async fetchIngredients(){
         const ingredients =  await this.ingredientsModel.findOne().exec();
-        console.log(ingredients);
+        // console.log(ingredients);
         this.ingredientsID = ingredients.id;
         this.ingredients = ingredients.ingredients
         return this.ingredients;
@@ -26,10 +26,19 @@ export class IngredientsService {
     }
 
     async addIngredient(ingredient:string){
+        const ingredientLowerCase = ingredient.toLowerCase();
         const ingredients =  await this.ingredientsModel.findOne().exec();
-        ingredients.ingredients.push(ingredient);
-        ingredients.save();
-        return ingredients;
+
+        if(!ingredients.ingredients.toLocaleString().toLowerCase().split(',').includes(ingredientLowerCase)){
+            ingredients.ingredients.push(ingredient);
+            ingredients.save();
+            // return {message:"Ingredient successfuly added!"};
+            return "Ingredient successfuly added!" as string;
+        } else{
+            // return {message:"Ingredient already exists! Try another one"};
+            return "Ingredient already exists! Try another one" as string;
+
+        }
     }
 }
 

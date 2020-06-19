@@ -8,11 +8,12 @@ import { RecipesModule } from './recipes/recipes.module';
 import { IngredientsModule } from './ingredients/ingredients.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { FavouritesModule } from './favourites/favourites.module';
 import config from './config/constants';
 
 
 @Module({
-  imports: [RecipesModule,IngredientsModule,MongooseModule.forRoot(config.mongoURI), AuthModule, UsersModule],
+  imports: [RecipesModule,IngredientsModule,MongooseModule.forRoot(config.mongoURI), AuthModule, UsersModule, FavouritesModule],
   //Kontroleri su zaduzeni za hendlovanje nadolazecih request-ova
   controllers: [AppController],
   //Providers su dodaci koje provajduju dodatne funkcionalnosti - Modularnost
