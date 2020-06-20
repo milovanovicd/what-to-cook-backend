@@ -8,6 +8,7 @@ export const RecipeSchema = new mongoose.Schema({
   ingredients: { type: [String], required: true },
   cookingTime: { type: Number, required: true },
   isFavourite: { type: Boolean, required: true },
+  category:{type: String, required: true}
 });
 
 export interface Recipe extends mongoose.Document {
@@ -19,4 +20,5 @@ export interface Recipe extends mongoose.Document {
   ingredients: string[];
   cookingTime: number;
   isFavourite: boolean;
+  category:string;
 }

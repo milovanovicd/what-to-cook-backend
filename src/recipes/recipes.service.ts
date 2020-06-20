@@ -9,7 +9,7 @@ export class RecipesService {
 //   private _recipes: Recipe[] = [];
 
   constructor(
-    @InjectModel('Recipe') private readonly productModel: Model<Recipe>,
+    @InjectModel('Recipe') private readonly recipeModel: Model<Recipe>,
   ) {}
 
   async addRecipe(
@@ -20,9 +20,10 @@ export class RecipesService {
     ingredients: string[],
     cookingTime: number,
     isFavourite: boolean,
+    category
   ) {
     // const recipeId = Math.random().toString();
-    const newRecipe = new this.productModel({
+    const newRecipe = new this.recipeModel({
       userId,
       title,
       description,
@@ -30,6 +31,7 @@ export class RecipesService {
       ingredients,
       cookingTime,
       isFavourite,
+      category
     });
     // this._recipes.push(newRecipe);
     //mongoose .save() metoda - kreira query
@@ -38,7 +40,7 @@ export class RecipesService {
   }
 
   async fetchRecipes() {
-    const recipes = await this.productModel.find().exec();
+    const recipes = await this.recipeModel.find().exec();
     return recipes.map(r => ({
       id: r.id,
       userId: r.userId,
@@ -48,6 +50,7 @@ export class RecipesService {
       ingredients: r.ingredients,
       cookingTime: r.cookingTime,
       isFavourite: r.isFavourite,
+      category:r.category
     }));
   }
 
@@ -62,6 +65,7 @@ export class RecipesService {
       ingredients: recipe.ingredients,
       cookingTime: recipe.cookingTime,
       isFavourite: recipe.isFavourite,
+      category:recipe.category
     };
   }
 
@@ -71,6 +75,7 @@ export class RecipesService {
     description: string,
     ingredients: string[],
     cookingTime: number,
+    category:string
   ) {
     const updatedRecipe = await this.findRecipe(recipeId);
 
@@ -86,12 +91,15 @@ export class RecipesService {
     if (cookingTime) {
       updatedRecipe.cookingTime = cookingTime;
     }
+    if (category) {
+      updatedRecipe.category = category;
+    }
     updatedRecipe.save();
   }
 
   async removeRecipe(recipeId) {
     //Korisitimo _id jer je tako zapisano u bazi id je samo getter
-    const result = await this.productModel.deleteOne({ _id: recipeId }).exec();
+    const result = await this.recipeModel.deleteOne({ _id: recipeId }).exec();
     if (result.n === 0) {
       throw new NotFoundException('Could not find recipe!');
     }
@@ -100,7 +108,7 @@ export class RecipesService {
   private async findRecipe(id: string): Promise<Recipe> {
     let recipe;
     try {
-      recipe = await this.productModel.findById(id).exec();
+      recipe = await this.recipeModel.findById(id).exec();
     } catch {
       throw new NotFoundException('Could not find recipe!');
     }

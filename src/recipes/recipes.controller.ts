@@ -15,6 +15,7 @@ export class RecipesController {
     @Body('ingredients') ingredients: string[],
     @Body('cookingTime') cookingTime: number,
     @Body('isFavourite') isFavourite: boolean,
+    @Body('category') category: string,
   ){
     const genereatedId = await this.recipesService.addRecipe(
       userId,
@@ -24,6 +25,7 @@ export class RecipesController {
       ingredients,
       cookingTime,
       isFavourite,
+      category
     );
     return {
       id: genereatedId,
@@ -48,8 +50,9 @@ export class RecipesController {
     @Body('description') description: string,
     @Body('ingredients') ingredients: string[],
     @Body('cookingTime') cookingTime: number,
+    @Body('category') category: string,
   ) {
-    await this.recipesService.updateRecipe(recipeId,title,description,ingredients,cookingTime);
+    await this.recipesService.updateRecipe(recipeId,title,description,ingredients,cookingTime,category);
     return null;
   }
 

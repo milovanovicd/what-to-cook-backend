@@ -38,8 +38,6 @@ export class FavouritesController {
         // return result;
     }
 
-
-
     @Get()
     async getAll(){
         const favs = await this.favService.getAllFavourites();
