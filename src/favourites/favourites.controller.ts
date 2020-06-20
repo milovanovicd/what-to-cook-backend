@@ -29,6 +29,17 @@ export class FavouritesController {
         // return result;
     }
 
+    @Post('remove-by-recipe')
+    async removeFromFavouritesByRecipeId(
+        @Body('recipeId') recipeId: string,
+    ){
+        await this.favService.removeFromFavouritesById(recipeId);
+        return null;
+        // return result;
+    }
+
+
+
     @Get()
     async getAll(){
         const favs = await this.favService.getAllFavourites();

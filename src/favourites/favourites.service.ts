@@ -25,6 +25,15 @@ export class FavouritesService {
         return favouriteToDelete;
     }
 
+    async removeFromFavouritesById(recipeId:string){
+        const favouritesToDelete = await this.favouriteModel.find({recipeId:recipeId});
+
+        favouritesToDelete.forEach(async element => {
+            await this.favouriteModel.deleteOne({_id:element._id}).exec();
+        });
+
+    }
+
     async getAllFavourites(){
         const favourites = await this.favouriteModel.find().exec();
         return favourites;
